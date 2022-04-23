@@ -5,6 +5,15 @@ type Language struct {
 	Name string
 }
 
+type AllLanguages []Language
+
+var Languages = AllLanguages{
+	{
+		Code:           "code1",
+		Name:    "Language",
+	},
+}
+
 func NewLanguage() Language {
 	return Language{"", ""}
 }

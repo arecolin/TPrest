@@ -1,3 +1,3 @@
-module TPrest
+module entities
 
 go 1.15
