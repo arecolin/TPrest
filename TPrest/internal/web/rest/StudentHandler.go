@@ -26,8 +26,7 @@ func CreateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetOneStudent(w http.ResponseWriter, r *http.Request) {
-	studentID := mux.Vars(r)["Id"]
-
+	studentID := mux.Vars(r)["id"]
 	for _, singleStudent := range Students {
 		if singleStudent.Id == studentID {
 			json.NewEncoder(w).Encode(singleStudent)
@@ -42,7 +41,7 @@ func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateStudent(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["Id"]
+	id := mux.Vars(r)["id"]
 
 	studentId := id
 	var updatedStudent Student
@@ -68,7 +67,7 @@ func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteStudent(w http.ResponseWriter, r *http.Request) {
-	StudentId := mux.Vars(r)["Id"]
+	StudentId := mux.Vars(r)["id"]
 
 	for i, singleStudent := range Students {
 		if singleStudent.Id == StudentId {
