@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
+	. "internal/entities"
 )
 
 func CreateLanguage(w http.ResponseWriter, r *http.Request) {

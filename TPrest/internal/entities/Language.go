@@ -9,7 +9,7 @@ type AllLanguages []Language
 
 var Languages = AllLanguages{
 	{
-		Code:           "code1",
+		Code:    "code1",
 		Name:    "Language",
 	},
 }

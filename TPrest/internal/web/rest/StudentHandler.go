@@ -3,11 +3,11 @@ package web
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
+	data "internal/bdd"
+	. "internal/entities"
 	"io/ioutil"
 	"net/http"
-	"strconv"
-	. "entities"
+	"github.com/gorilla/mux"
 )
 
 func CreateStudent(w http.ResponseWriter, r *http.Request) {
@@ -22,28 +22,29 @@ func CreateStudent(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 
 	json.NewEncoder(w).Encode(student)
+	data.SaveStudent(student)
 }
 
 func GetOneStudent(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["Id"]
-
-	studentID, _ := strconv.ParseInt(id, 10, 0)
+	studentID := mux.Vars(r)["Id"]
 
 	for _, singleStudent := range Students {
-		if singleStudent.Id == int(studentID) {
+		if singleStudent.Id == studentID {
 			json.NewEncoder(w).Encode(singleStudent)
+			data.DbGetStudent(studentID)
 		}
 	}
 }
 
 func GetAllStudents(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Students)
+	data.DbGetAll("students")
 }
 
 func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["Id"]
 
-	studentId, _ := strconv.ParseInt(id, 10, 0)
+	studentId := id
 	var updatedStudent Student
 
 	reqBody, err := ioutil.ReadAll(r.Body)
@@ -53,25 +54,27 @@ func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &updatedStudent)
 
 	for i, singleStudent := range Students {
-		if singleStudent.Id == int(studentId) {
+		if singleStudent.Id == studentId {
 			singleStudent.FirstName = updatedStudent.FirstName
 			singleStudent.LastName = updatedStudent.LastName
 			singleStudent.Age = updatedStudent.Age
 			singleStudent.LanguageCode = updatedStudent.LanguageCode
 			Students = append(Students[:i], singleStudent)
 			json.NewEncoder(w).Encode(singleStudent)
+
+			data.DbUpdateStudent(singleStudent)
 		}
 	}
 }
 
 func DeleteStudent(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["Id"]
-
-	StudentId, _ := strconv.ParseInt(id, 10, 0)
+	StudentId := mux.Vars(r)["Id"]
 
 	for i, singleStudent := range Students {
-		if singleStudent.Id == int(StudentId) {
+		if singleStudent.Id == StudentId {
 			Students = append(Students[:i], Students[i+1:]...)
+
+			data.DbDeleteStudent(singleStudent.Id)
 			fmt.Fprintf(w, "The event with ID %v has been deleted successfully", StudentId)
 		}
 	}
