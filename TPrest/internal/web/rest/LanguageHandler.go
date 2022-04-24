@@ -54,7 +54,7 @@ func UpdateLanguage(w http.ResponseWriter, r *http.Request) {
 	for i, singleLanguage := range Languages {
 		if singleLanguage.Code == languageCode {
 			singleLanguage.Name = updatedLanguage.Name
-			Languages = append(Languages[:i], singleLanguage)
+			Languages[i] = singleLanguage
 			json.NewEncoder(w).Encode(singleLanguage)
 
 			data.DbUpdateLanguage(singleLanguage)

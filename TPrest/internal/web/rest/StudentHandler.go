@@ -58,7 +58,7 @@ func UpdateStudent(w http.ResponseWriter, r *http.Request) {
 			singleStudent.LastName = updatedStudent.LastName
 			singleStudent.Age = updatedStudent.Age
 			singleStudent.LanguageCode = updatedStudent.LanguageCode
-			Students = append(Students[:i], singleStudent)
+			Students[i] = singleStudent
 			json.NewEncoder(w).Encode(singleStudent)
 
 			data.DbUpdateStudent(singleStudent)
